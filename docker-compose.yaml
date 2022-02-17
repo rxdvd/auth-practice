@@ -1,0 +1,46 @@
+version: "3"
+services:
+  api:
+    image: node:16.13.0
+    depends_on:
+      - db
+    environment:
+      PGHOST: db
+      PGUSER: ${PSQL_USERNAME}
+      PGPASSWORD: ${PSQL_PASSWORD}
+      PGDATABASE: ${PSQL_DB_NAME}
+      PGPORT: ${PSQL_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${API_PORT}
+    ports:
+      - 3000:${API_PORT}
+    volumes:
+      - type: bind
+        source: ./server
+        target: /code
+    working_dir: /code
+    command: bash -c "npm i && npm run dev"
+  client:
+    image: node:16.13.0
+    ports:
+      - 8000:8080
+    volumes:
+      - type: bind
+        source: ./client
+        target: /code
+    working_dir: /code
+    command: bash -c "npm i && npm run start"
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${PSQL_DB_NAME}
+      POSTGRES_USER: ${PSQL_USERNAME}
+      POSTGRES_PASSWORD: ${PSQL_PASSWORD}
+    ports:
+      - 5432:${PSQL_PORT}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./db/:/docker-entrypoint-initdb.d/:ro
+      - ./server/data/users.json:/seed.json/:ro
+volumes:
+  dbdata:

@@ -1,0 +1,13 @@
+{
+  "name": "auth_practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker compose up",
+    "stop": "docker compose down --volumes --remove-orphans"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

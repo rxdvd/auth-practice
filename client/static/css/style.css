@@ -1,0 +1,12 @@
+form{
+    width: fit-content;
+    text-align: right;
+}
+
+form *{
+    margin-bottom: 3px;
+}
+
+.hidden{
+    display: none;
+}
